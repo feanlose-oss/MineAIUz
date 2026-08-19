@@ -1,0 +1,58 @@
+const MineAISearch = (() => {
+
+    function buildMapSearch(analysis) {
+
+        const parts = [
+            "Minecraft map"
+        ];
+
+        if (analysis.version) {
+            parts.push(analysis.version);
+        }
+
+        if (analysis.mode) {
+            parts.push(analysis.mode);
+        }
+
+        if (analysis.question) {
+            parts.push(analysis.question);
+        }
+
+        return parts.join(" ");
+    }
+
+
+    function searchMaps(analysis) {
+
+        const query = buildMapSearch(analysis);
+
+        const planetMinecraft =
+            "https://www.planetminecraft.com/projects/?platform=1";
+
+        const google =
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(
+                query + " site:planetminecraft.com/projects"
+            );
+
+        return {
+            query,
+            sources: [
+                {
+                    name: "Planet Minecraft",
+                    url: planetMinecraft
+                },
+                {
+                    name: "Google — Minecraft Maps",
+                    url: google
+                }
+            ]
+        };
+    }
+
+
+    return {
+        searchMaps
+    };
+
+})();
