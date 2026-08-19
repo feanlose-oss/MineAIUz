@@ -1,0 +1,29 @@
+{
+  "mods": {
+    "Fabric API": {
+      "loader": "Fabric",
+      "description": "Fabric modlari uchun asosiy API.",
+      "type": "library"
+    },
+    "Lithium": {
+      "loader": "Fabric",
+      "description": "Minecraft server va o‘yin performance'ini yaxshilashga yordam beradi.",
+      "type": "performance"
+    },
+    "FerriteCore": {
+      "loader": "Fabric",
+      "description": "Xotira ishlatilishini kamaytirishga yordam beradi.",
+      "type": "performance"
+    },
+    "Sodium": {
+      "loader": "Fabric",
+      "description": "Minecraft grafikasi va FPS performance'ini yaxshilash uchun ishlatiladi.",
+      "type": "client"
+    },
+    "Iris": {
+      "loader": "Fabric",
+      "description": "Shaderlarni ishlatish imkonini beradi.",
+      "type": "client"
+    }
+  }
+}
