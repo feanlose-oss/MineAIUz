@@ -1,0 +1,42 @@
+{
+  "server": {
+    "paper": {
+      "name": "Paper",
+      "type": "server",
+      "description": "Paper Minecraft server yadrosi bo‘lib, pluginlar bilan ishlash va server unumdorligini yaxshilash uchun ishlatiladi.",
+      "use_for": [
+        "Survival",
+        "Anarchy",
+        "BoxPvP",
+        "Prison",
+        "KitPvP",
+        "Lobby"
+      ]
+    },
+    "spigot": {
+      "name": "Spigot",
+      "type": "server",
+      "description": "Spigot pluginlarga asoslangan Minecraft server yadrosi."
+    },
+    "fabric": {
+      "name": "Fabric",
+      "type": "modded-server",
+      "description": "Fabric mod loader asosidagi Minecraft server tizimi.",
+      "requires": [
+        "Fabric Loader",
+        "Fabric API"
+      ]
+    }
+  },
+
+  "server_properties": {
+    "motd": "Server ro‘yxatida ko‘rinadigan server nomi.",
+    "online-mode": "Cracked yoki premium akkauntlar bilan bog‘liq autentifikatsiya sozlamasi.",
+    "difficulty": "O‘yin qiyinlik darajasi.",
+    "gamemode": "Default o‘yin rejimi.",
+    "pvp": "PvP janglarini yoqish yoki o‘chirish.",
+    "max-players": "Serverga kirishi mumkin bo‘lgan maksimal o‘yinchilar soni.",
+    "view-distance": "Server yuboradigan chunk masofasi.",
+    "simulation-distance": "Moblar va boshqa mexanikalarning ishlash masofasi."
+  }
+}
