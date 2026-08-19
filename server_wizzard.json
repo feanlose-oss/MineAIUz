@@ -1,0 +1,94 @@
+const MineAIWizard = (() => {
+
+    let currentPlan = null;
+    let currentStep = 0;
+
+    function start(plan) {
+
+        if (!plan || !plan.steps) {
+            return null;
+        }
+
+        currentPlan = plan;
+        currentStep = 0;
+
+        return getCurrentStep();
+    }
+
+
+    function getCurrentStep() {
+
+        if (!currentPlan) {
+            return null;
+        }
+
+        const step =
+            currentPlan.steps[currentStep];
+
+        if (!step) {
+            return {
+                finished: true
+            };
+        }
+
+        return {
+            finished: false,
+            number: currentStep + 1,
+            total: currentPlan.steps.length,
+            title: step.title,
+            text: step.text
+        };
+    }
+
+
+    function next() {
+
+        if (!currentPlan) {
+            return null;
+        }
+
+        currentStep++;
+
+        return getCurrentStep();
+    }
+
+
+    function previous() {
+
+        if (!currentPlan) {
+            return null;
+        }
+
+        if (currentStep > 0) {
+            currentStep--;
+        }
+
+        return getCurrentStep();
+    }
+
+
+    function reset() {
+
+        currentPlan = null;
+        currentStep = 0;
+
+    }
+
+
+    function isActive() {
+
+        return currentPlan !== null;
+
+    }
+
+
+    return {
+        start,
+        next,
+        previous,
+        reset,
+        isActive,
+        getCurrentStep
+    };
+
+})();
