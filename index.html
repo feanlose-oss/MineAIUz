@@ -13,99 +13,252 @@
     padding:0;
 }
 
-body{
-    min-height:100vh;
-    background:#070b09;
-    color:#eafff1;
-    font-family:Arial, sans-serif;
+:root{
+    --bg:#060b08;
+    --panel:#0c1410;
+    --panel2:#101b15;
+    --border:#1d3827;
+    --green:#39e879;
+    --green2:#22c55e;
+    --text:#ecfff2;
+    --muted:#8ba294;
 }
 
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(57,232,121,.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(34,197,94,.06),
+            transparent 30%
+        ),
+        var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+/* ================= HEADER ================= */
+
 header{
-    height:65px;
+    height:66px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:0 18px;
-    border-bottom:1px solid #183523;
-    background:#0a100d;
+
+    background:rgba(6,11,8,.90);
+    backdrop-filter:blur(16px);
+
+    border-bottom:1px solid var(--border);
+
     position:sticky;
     top:0;
-    z-index:10;
+    z-index:100;
 }
 
 .logo{
     display:flex;
     align-items:center;
     gap:10px;
-    font-size:20px;
+
+    font-size:21px;
     font-weight:900;
 }
 
 .logoIcon{
-    width:38px;
-    height:38px;
-    border-radius:10px;
+    width:40px;
+    height:40px;
+
     display:grid;
     place-items:center;
-    background:#39e879;
+
+    border-radius:11px;
+
+    background:linear-gradient(
+        135deg,
+        var(--green),
+        var(--green2)
+    );
+
     color:#041108;
-    font-weight:900;
+
+    box-shadow:
+        0 0 25px rgba(57,232,121,.18);
 }
 
 .logo span{
-    color:#39e879;
+    color:var(--green);
 }
 
 .status{
-    font-size:12px;
-    color:#39e879;
-    border:1px solid #235c37;
-    padding:7px 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    font-size:11px;
+    color:var(--green);
+
+    padding:7px 11px;
+
+    border:1px solid rgba(57,232,121,.25);
     border-radius:20px;
+
+    background:rgba(57,232,121,.04);
 }
 
-main{
-    max-width:1000px;
-    margin:auto;
-    padding:25px 15px 100px;
+.statusDot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+
+    box-shadow:
+        0 0 10px var(--green);
 }
+
+/* ================= MAIN ================= */
+
+main{
+    width:100%;
+    max-width:1050px;
+
+    margin:auto;
+
+    padding:
+        25px
+        15px
+        80px;
+}
+
+/* ================= HERO ================= */
 
 .hero{
     text-align:center;
     padding:25px 10px 30px;
 }
 
+.heroBadge{
+    display:inline-block;
+
+    padding:7px 12px;
+
+    border:1px solid rgba(57,232,121,.25);
+    border-radius:20px;
+
+    color:var(--green);
+
+    font-size:11px;
+    font-weight:bold;
+
+    margin-bottom:15px;
+
+    background:rgba(57,232,121,.04);
+}
+
 .hero h1{
-    font-size:35px;
-    margin-bottom:10px;
+    font-size:38px;
+    line-height:1.15;
+
+    margin-bottom:12px;
 }
 
 .hero h1 span{
-    color:#39e879;
+    color:var(--green);
 }
 
 .hero p{
-    color:#91a59a;
+    max-width:650px;
+    margin:auto;
+
+    color:var(--muted);
+
     line-height:1.6;
 }
 
-.chat{
-    background:#0c1410;
-    border:1px solid #1c3525;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 20px 60px rgba(0,0,0,.3);
+/* ================= AI INFO ================= */
+
+.aiInfo{
+    display:grid;
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+
+    margin-bottom:15px;
 }
+
+.infoCard{
+    padding:13px;
+
+    background:rgba(12,20,16,.8);
+
+    border:1px solid var(--border);
+
+    border-radius:13px;
+
+    text-align:center;
+}
+
+.infoCard strong{
+    display:block;
+
+    color:var(--green);
+
+    font-size:13px;
+
+    margin-bottom:4px;
+}
+
+.infoCard span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* ================= CHAT ================= */
+
+.chat{
+    overflow:hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:19px;
+
+    background:
+        rgba(12,20,16,.92);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.28);
+}
+
+/* ================= MESSAGES ================= */
 
 .messages{
     min-height:430px;
     max-height:60vh;
+
     overflow-y:auto;
+
     padding:20px;
+}
+
+.messages::-webkit-scrollbar{
+    width:6px;
+}
+
+.messages::-webkit-scrollbar-thumb{
+    background:#1e3a28;
+    border-radius:10px;
 }
 
 .message{
     display:flex;
+
     margin-bottom:18px;
 }
 
@@ -115,97 +268,284 @@ main{
 
 .bubble{
     max-width:82%;
+
     padding:13px 15px;
+
     border-radius:15px;
+
     line-height:1.55;
+
     white-space:pre-wrap;
+
+    font-size:14px;
 }
 
-.ai .bubble{
-    background:#111d16;
-    border:1px solid #203b29;
+.message.ai .bubble{
+    background:var(--panel2);
+
+    border:
+        1px solid #203d2a;
+
+    color:#dff8e7;
 }
 
-.user .bubble{
-    background:#39e879;
-    color:#041108;
+.message.user .bubble{
+    background:var(--green);
+
+    color:#031108;
+
     font-weight:600;
 }
 
-.inputArea{
-    border-top:1px solid #1c3525;
-    padding:12px;
+/* ================= ANALYSIS ================= */
+
+.analysis{
+    margin-top:8px;
+
     display:flex;
+    flex-wrap:wrap;
+
+    gap:6px;
+}
+
+.tag{
+    padding:5px 8px;
+
+    border-radius:8px;
+
+    background:#08110c;
+
+    border:1px solid #24462f;
+
+    color:#91c6a0;
+
+    font-size:10px;
+}
+
+/* ================= TYPING ================= */
+
+.typing{
+    color:#6f8b79;
+
+    font-size:12px;
+
+    margin:
+        0 0
+        15px
+        5px;
+}
+
+.typing::after{
+    content:"";
+
+    animation:
+        dots 1.2s infinite;
+}
+
+@keyframes dots{
+
+    0%{
+        content:"";
+    }
+
+    33%{
+        content:".";
+    }
+
+    66%{
+        content:"..";
+    }
+
+    100%{
+        content:"...";
+    }
+}
+
+/* ================= QUICK ================= */
+
+.quick{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    padding:12px;
+
+    border-top:
+        1px solid #16291d;
+
+    background:#09100c;
+}
+
+.quick button{
+    padding:
+        9px
+        12px;
+
+    border-radius:10px;
+
+    border:
+        1px solid #24432e;
+
+    background:#101a14;
+
+    color:#b8d8c1;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.quick button:hover{
+    color:var(--green);
+
+    border-color:var(--green);
+
+    transform:translateY(-1px);
+}
+
+/* ================= INPUT ================= */
+
+.inputArea{
+    display:flex;
+
     gap:10px;
-    background:#0a100d;
+
+    padding:12px;
+
+    border-top:
+        1px solid var(--border);
+
+    background:#080e0b;
 }
 
 textarea{
     flex:1;
-    min-height:48px;
-    max-height:130px;
+
+    min-height:50px;
+    max-height:140px;
+
     resize:none;
-    background:#101a14;
-    border:1px solid #24432e;
-    border-radius:12px;
-    color:white;
-    padding:13px;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    border:
+        1px solid #24432e;
+
     outline:none;
-    font-size:15px;
+
+    background:#101a14;
+
+    color:white;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    transition:.2s;
 }
 
 textarea:focus{
-    border-color:#39e879;
+    border-color:var(--green);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(57,232,121,.06);
 }
 
-button{
-    border:none;
-    cursor:pointer;
+textarea::placeholder{
+    color:#64786b;
 }
 
 .send{
     width:52px;
-    border-radius:12px;
-    background:#39e879;
-    color:#041108;
+
+    border-radius:13px;
+
+    background:var(--green);
+
+    color:#031108;
+
     font-size:20px;
+
     font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
 }
 
-.quick{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    padding:12px;
-    border-top:1px solid #16291d;
+.send:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(57,232,121,.15);
 }
 
-.quick button{
-    padding:9px 12px;
-    border-radius:10px;
-    background:#101a14;
-    color:#b8d8c1;
-    border:1px solid #24432e;
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+
+    color:#53685a;
+
+    font-size:11px;
+
+    margin-top:18px;
 }
 
-.quick button:hover{
-    border-color:#39e879;
-    color:#39e879;
-}
+/* ================= MOBILE ================= */
 
-.typing{
-    color:#7d9986;
-    font-size:13px;
-    margin-bottom:15px;
-}
+@media(max-width:700px){
 
-@media(max-width:600px){
+    main{
+        padding:
+            18px
+            10px
+            60px;
+    }
+
     .hero h1{
-        font-size:27px;
+        font-size:29px;
+    }
+
+    .aiInfo{
+        grid-template-columns:1fr;
+    }
+
+    .messages{
+        min-height:400px;
     }
 
     .bubble{
-        max-width:90%;
+        max-width:91%;
+        font-size:13px;
+    }
+
+    .status{
+        display:none;
+    }
+}
+
+@media(max-width:420px){
+
+    .hero{
+        padding-top:18px;
+    }
+
+    .hero h1{
+        font-size:26px;
+    }
+
+    .quick button{
+        flex:1;
+    }
+
+    .send{
+        width:48px;
     }
 }
 </style>
@@ -213,510 +553,661 @@ button{
 
 <body>
 
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header>
+
     <div class="logo">
-        <div class="logoIcon">M</div>
-        <div>Mine<span>AI</span></div>
-    </div>
 
-    <div class="status">● Minecraft AI</div>
-</header>
+        <div class="logoIcon">
+            M
+        </div>
 
-<main>
-
-<section class="hero">
-    <h1>Minecraft <span>Server Assistant</span></h1>
-    <p>
-        Server yaratish, pluginlar, modlar, worldlar va
-        Minecraft rejimlari bo‘yicha yordamchi.
-    </p>
-</section>
-
-<section class="chat">
-
-    <div class="messages" id="messages">
-
-        <div class="message ai">
-            <div class="bubble">
-👋 Salom! Men MineAI.
-
-Men Minecraft server yaratishda yordam beraman.
-
-Masalan:
-• “Anarchy server ochmoqchiman”
-• “LuckPerms qanday sozlanadi?”
-• “1.21.1 uchun lobby kerak”
-• “Survival serverga qaysi pluginlar kerak?”
-• “BoxPvP map kerak”
-
-Savolingni yozaver! 🚀
-            </div>
+        <div>
+            Mine<span>AI</span>
         </div>
 
     </div>
 
-    <div class="quick">
-        <button onclick="quickAsk('Anarchy server ochmoqchiman')">
-            ⚔️ Anarchy
-        </button>
+    <div class="status">
 
-        <button onclick="quickAsk('Survival server ochmoqchiman')">
-            🌲 Survival
-        </button>
+        <div class="statusDot"></div>
 
-        <button onclick="quickAsk('Lobby hub kerak')">
-            🏰 Lobby
-        </button>
+        Minecraft AI
 
-        <button onclick="quickAsk('Pluginlar kerak')">
-            🔌 Pluginlar
-        </button>
-
-        <button onclick="quickAsk('BoxPvP server qilmoqchiman')">
-            💥 BoxPvP
-        </button>
     </div>
 
-    <div class="inputArea">
-        <textarea
-            id="input"
-            placeholder="Minecraft server haqida savol yoz..."
-            onkeydown="handleKey(event)"
-        ></textarea>
+</header>
 
-        <button class="send" onclick="sendMessage()">➤</button>
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="heroBadge">
+            🧠 MINEAI CORE v2
+        </div>
+
+        <h1>
+            Minecraft
+            <span>Server Assistant</span>
+        </h1>
+
+        <p>
+            Server yaratish, pluginlar, modlar,
+            worldlar, maplar va Minecraft rejimlari
+            bo‘yicha yordamchi.
+        </p>
+
+    </section>
+
+
+    <!-- INFO -->
+
+    <section class="aiInfo">
+
+        <div class="infoCard">
+
+            <strong>🧠 AI Core</strong>
+
+            <span>
+                Savolni tahlil qiladi
+            </span>
+
+        </div>
+
+        <div class="infoCard">
+
+            <strong>📚 Knowledge</strong>
+
+            <span>
+                Minecraft bilim bazasi
+            </span>
+
+        </div>
+
+        <div class="infoCard">
+
+            <strong>🌐 Search</strong>
+
+            <span>
+                Keyingi bosqichda
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHAT -->
+
+    <section class="chat">
+
+        <div
+            class="messages"
+            id="messages"
+        >
+
+            <div class="message ai">
+
+                <div class="bubble">
+
+👋 Salom! Men <b>MineAI</b>.
+
+Men Minecraft server yaratish bo‘yicha yordam beraman.
+
+Masalan:
+
+⚔️ Anarchy server ochish
+🌲 Survival server sozlash
+💥 BoxPvP yaratish
+🏰 Lobby / Hub topish
+🔌 Plugin tanlash
+🧩 Mod tanlash
+👑 Rank va permission
+🐛 Server xatosini aniqlash
+🗺️ Map / World qidirish
+
+Savolingni yozaver! 🚀
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK BUTTONS -->
+
+        <div class="quick">
+
+            <button
+                onclick="quickAsk('1.21.1 Anarchy server ochmoqchiman')"
+            >
+                ⚔️ Anarchy
+            </button>
+
+            <button
+                onclick="quickAsk('1.21.1 Survival server ochmoqchiman')"
+            >
+                🌲 Survival
+            </button>
+
+            <button
+                onclick="quickAsk('1.21.1 uchun lobby hub map kerak')"
+            >
+                🏰 Lobby
+            </button>
+
+            <button
+                onclick="quickAsk('Anarchy uchun pluginlar kerak')"
+            >
+                🔌 Pluginlar
+            </button>
+
+            <button
+                onclick="quickAsk('BoxPvP server qilmoqchiman')"
+            >
+                💥 BoxPvP
+            </button>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div class="inputArea">
+
+            <textarea
+                id="input"
+                placeholder="Minecraft server haqida savol yoz..."
+                autocomplete="off"
+            ></textarea>
+
+            <button
+                class="send"
+                id="sendButton"
+                type="button"
+            >
+                ➤
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <div class="footer">
+
+        MineAI • Minecraft Server Assistant • API'siz Core
+
     </div>
-
-</section>
 
 </main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<!-- AI Core -->
+
+<script src="js/ai-core.js"></script>
+
+<!-- Knowledge Loader -->
+
+<script src="js/knowledge-loader.js"></script>
+
 
 <script>
 
 /* =====================================================
-   MINEAI CORE
-   API YO‘Q
-   ===================================================== */
+   MINEAI APP
+===================================================== */
 
-const knowledge = [
+let knowledgeReady = false;
 
-{
-    keys:["salom","hello","assalom","hi"],
-    answer:
-`👋 Salom!
 
-Men MineAI — Minecraft server yaratishda yordam beradigan AI yordamchiman.
+/* -----------------------------------------------------
+   KNOWLEDGE BASE YUKLASH
+----------------------------------------------------- */
 
-Servering nima haqida bo‘lishini ayt:
-⚔️ Anarchy
-🌲 Survival
-💥 BoxPvP
-🏰 Hub/Lobby
-☁️ Skyblock
-⛏️ Prison`
-},
+async function initializeMineAI(){
 
-{
-    keys:["anarchy","anarxiya"],
-    answer:
-`⚔️ ANARCHY SERVER
+    try{
 
-Anarchy server uchun odatda:
+        if(
+            typeof MineAIKnowledge !==
+            "undefined"
+        ){
 
-1. Paper yoki mos server yadrosi
-2. Spawn
-3. RTP
-4. PvP
-5. Economy
-6. Anti-cheat
-7. Rank tizimi
-8. Hub/Lobby
-9. WorldBorder
-10. Server backup
+            await MineAIKnowledge.load();
 
-Xohlasang MineAI bilan Anarchy serverni bosqichma-bosqich qurishimiz mumkin.`
-},
+            knowledgeReady = true;
 
-{
-    keys:["survival","surv"],
-    answer:
-`🌲 SURVIVAL SERVER
+            console.log(
+                "🧠 MineAI Knowledge Base tayyor."
+            );
 
-Tavsiya qilinadigan asosiy qismlar:
-
-• EssentialsX
-• LuckPerms
-• WorldEdit
-• WorldGuard
-• Vault
-• Economy
-• RTP
-• Spawn
-• Shop
-• Homes
-• Claims
-
-Avval server yadrosini tanlaymiz, keyin pluginlarni birma-bir sozlaymiz.`
-},
-
-{
-    keys:["boxpvp","box pvp"],
-    answer:
-`💥 BOX PVP
-
-BoxPvP server uchun:
-
-• PvP arena
-• Spawn
-• Mine
-• Kitlar
-• Ranklar
-• Economy
-• Crates
-• Leaderboard
-• Anti-cheat
-• WorldGuard
-
-Keyin map va pluginlarni moslashtiramiz.`
-},
-
-{
-    keys:["lobby","hub","spawn"],
-    answer:
-`🏰 LOBBY / HUB
-
-Lobby uchun odatda:
-
-• Hub map
-• NPC
-• Server selector
-• Scoreboard
-• TAB
-• Cosmetics
-• Parkour
-• Portallar
-• Spawn protection
-
-Agar “1.21.1 uchun lobby map kerak” desang, keyingi versiyada qidiruv tizimi orqali mos maplarni topish funksiyasini qo‘shamiz.`
-},
-
-{
-    keys:["plugin","plugins"],
-    answer:
-`🔌 PLUGINLAR
-
-Minecraft server uchun ko‘p ishlatiladigan pluginlar:
-
-• LuckPerms — permission/rank
-• EssentialsX — asosiy komandalar
-• WorldEdit — qurilish
-• WorldGuard — region himoyasi
-• Vault — economy/permission integratsiyasi
-• TAB — TAB va scoreboard
-• Multiverse — bir nechta world
-• Citizens — NPC
-
-Servering qaysi rejimdaligini aytsang, kerakli pluginlarni ajratib beraman.`
-},
-
-{
-    keys:["luckperms","rank","permission"],
-    answer:
-`👑 LUCKPERMS
-
-LuckPerms yordamida:
-
-• rank yaratish
-• permission berish
-• prefix qo‘yish
-• guruhlarni boshqarish
-• admin/moderator huquqlarini sozlash
-
-mumkin.
-
-Masalan:
-
-/lp creategroup Askar
-
-Keyin unga kerakli permissionlarni beramiz.`
-},
-
-{
-    keys:["map","karta","world","zip","hub.zip","world.zip"],
-    answer:
-`🗺️ MAP / WORLD
-
-Agar map kerak bo‘lsa, menga quyidagilarni yoz:
-
-Minecraft versiyasi:
-Masalan: 1.21.1
-
-Rejim:
-Masalan: Anarchy
-
-Map turi:
-Masalan: Lobby
-
-Shunda kerakli mapni qidirish uchun so‘rovni tayyorlaymiz.
-
-Keyingi bosqichda MineAI'ga real internet qidiruvini qo‘shamiz.`
-},
-
-{
-    keys:["server","server och","server ochish"],
-    answer:
-`🖥️ MINECRAFT SERVER
-
-Server ochishning asosiy bosqichlari:
-
-1. Minecraft versiyasini tanlash
-2. Server yadrosini tanlash
-3. Serverni ishga tushirish
-4. server.properties sozlash
-5. Plugin/modlarni o‘rnatish
-6. World yaratish
-7. Spawn qurish
-8. Permission/rank
-9. Protection
-10. Test qilish
-
-Agar xohlasang, serverni noldan birga quramiz.`
-},
-
-{
-    keys:["fabric"],
-    answer:
-`🧩 FABRIC
-
-Fabric — Minecraft uchun yengil mod loader.
-
-Agar serverda Fabric ishlatsang:
-
-• Fabric Loader
-• Fabric API
-• Server modlari
-
-kerak bo‘lishi mumkin.
-
-Paper pluginlari bilan Fabric modlarini aralashtirishda moslikni alohida tekshirish kerak.`
-},
-
-{
-    keys:["paper","spigot"],
-    answer:
-`⚙️ PAPER / SPIGOT
-
-Pluginli server uchun Paper juda qulay.
-
-Paper → performance + pluginlar
-
-Spigot → plugin ekotizimi
-
-Server rejimingni aytsang, qaysi biri ma’qul ekanini tushuntiraman.`
-},
-
-{
-    keys:["rtp","random teleport"],
-    answer:
-`🌍 RTP
-
-RTP o‘yinchini random joyga teleport qilish uchun ishlatiladi.
-
-Anarchy va Survival serverlarda juda foydali.
-
-Masalan:
-
-/rtp
-
-RTP pluginini tanlashda Minecraft versiyangni tekshirish kerak.`
-}
-
-];
-
-
-/* =====================================================
-   JAVOB QIDIRISH
-   ===================================================== */
-
-function normalize(text){
-
-    return text
-        .toLowerCase()
-        .replace(/[.,!?;:()[\]{}]/g," ")
-        .replace(/\s+/g," ")
-        .trim();
-
-}
-
-
-function findAnswer(question){
-
-    const q = normalize(question);
-
-    let best = null;
-    let bestScore = 0;
-
-    for(const item of knowledge){
-
-        let score = 0;
-
-        for(const key of item.keys){
-
-            const normalizedKey = normalize(key);
-
-            if(q.includes(normalizedKey)){
-                score += normalizedKey.length + 3;
-            }
         }
 
-        if(score > bestScore){
-            bestScore = score;
-            best = item;
-        }
+    }catch(error){
+
+        console.error(
+            "Knowledge yuklash xatosi:",
+            error
+        );
+
     }
 
-    if(best){
-        return best.answer;
-    }
-
-    return fallback(question);
 }
 
 
-/* =====================================================
-   FALLBACK
-   ===================================================== */
+/* -----------------------------------------------------
+   MESSAGE QO‘SHISH
+----------------------------------------------------- */
 
-function fallback(question){
+function addMessage(
+    text,
+    type,
+    analysis = null
+){
 
-    const words = normalize(question)
-        .split(" ")
-        .filter(w => w.length >= 3);
+    const messages =
+        document.getElementById(
+            "messages"
+        );
 
-    const minecraftWords = [
-        "minecraft",
-        "server",
-        "plugin",
-        "mod",
-        "world",
-        "map",
-        "lobby",
-        "hub",
-        "anarchy",
-        "survival",
-        "pvp",
-        "paper",
-        "fabric",
-        "spigot",
-        "rank",
-        "spawn",
-        "rtp"
-    ];
+    const wrapper =
+        document.createElement(
+            "div"
+        );
 
-    const related = words.some(word =>
-        minecraftWords.some(m => m.includes(word) || word.includes(m))
+    wrapper.className =
+        "message " + type;
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+    bubble.className =
+        "bubble";
+
+    bubble.textContent =
+        text;
+
+
+    wrapper.appendChild(
+        bubble
     );
 
-    if(related){
 
-        return `🤔 Bu savol bo‘yicha bilim bazamda hozircha aniq javob yo‘q.
+    /*
+       Faqat AI javobida
+       tahlil natijasini ko‘rsatamiz.
+    */
 
-Savolingni biroz boshqacha yozib ko‘r.
+    if(
+        type === "ai" &&
+        analysis &&
+        analysis.ok
+    ){
 
-Masalan:
-• Minecraft 1.21.1 server ochish
-• Anarchy uchun pluginlar
-• Lobby map kerak
-• LuckPerms rank yaratish
-• Survival server sozlash
+        const analysisBox =
+            document.createElement(
+                "div"
+            );
 
-🧠 MineAI bilim bazasi keyingi bosqichlarda kengaytiriladi.`;
+        analysisBox.className =
+            "analysis";
+
+
+        if(analysis.version){
+
+            addTag(
+                analysisBox,
+                "🎮 " +
+                analysis.version
+            );
+
+        }
+
+
+        if(analysis.mode){
+
+            addTag(
+                analysisBox,
+                "⚔️ " +
+                analysis.mode
+            );
+
+        }
+
+
+        if(analysis.category){
+
+            addTag(
+                analysisBox,
+                "📚 " +
+                analysis.category
+            );
+
+        }
+
+
+        if(analysis.intent){
+
+            addTag(
+                analysisBox,
+                "🎯 " +
+                analysis.intent
+            );
+
+        }
+
+
+        if(
+            analysis.confidence !==
+            undefined
+        ){
+
+            addTag(
+                analysisBox,
+                "🧠 " +
+                analysis.confidence +
+                "%"
+            );
+
+        }
+
+
+        bubble.appendChild(
+            analysisBox
+        );
+
     }
 
-    return `🛡️ Men faqat Minecraft serverlari bo‘yicha yordam beraman.
 
-Masalan:
-“Anarchy server ochish”
-“1.21.1 lobby map kerak”
-“LuckPerms rank yaratish”
-“Survival pluginlari kerak”`;
+    messages.appendChild(
+        wrapper
+    );
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
 }
 
 
-/* =====================================================
-   CHAT
-   ===================================================== */
+/* -----------------------------------------------------
+   TAG
+----------------------------------------------------- */
 
-function addMessage(text,type){
+function addTag(
+    parent,
+    text
+){
 
-    const messages = document.getElementById("messages");
+    const tag =
+        document.createElement(
+            "span"
+        );
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "message " + type;
+    tag.className =
+        "tag";
 
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.textContent = text;
+    tag.textContent =
+        text;
 
-    wrapper.appendChild(bubble);
-    messages.appendChild(wrapper);
+    parent.appendChild(
+        tag
+    );
 
-    messages.scrollTop = messages.scrollHeight;
 }
 
 
-function sendMessage(){
+/* -----------------------------------------------------
+   TYPING
+----------------------------------------------------- */
 
-    const input = document.getElementById("input");
-    const question = input.value.trim();
+function showTyping(){
 
-    if(!question) return;
+    const messages =
+        document.getElementById(
+            "messages"
+        );
 
-    addMessage(question,"user");
 
-    input.value = "";
+    const typing =
+        document.createElement(
+            "div"
+        );
 
-    const typing = document.createElement("div");
-    typing.className = "typing";
-    typing.id = "typing";
-    typing.textContent = "MineAI yozmoqda...";
+    typing.className =
+        "typing";
 
-    document.getElementById("messages").appendChild(typing);
+    typing.id =
+        "typing";
 
-    setTimeout(() => {
+    typing.textContent =
+        "MineAI yozmoqda";
+
+
+    messages.appendChild(
+        typing
+    );
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+}
+
+
+/* -----------------------------------------------------
+   TYPING O‘CHIRISH
+----------------------------------------------------- */
+
+function hideTyping(){
+
+    const typing =
+        document.getElementById(
+            "typing"
+        );
+
+    if(typing){
 
         typing.remove();
 
-        const answer = findAnswer(question);
+    }
 
-        addMessage(answer,"ai");
-
-    },350);
 }
 
 
+/* -----------------------------------------------------
+   SEND MESSAGE
+----------------------------------------------------- */
+
+function sendMessage(){
+
+    const input =
+        document.getElementById(
+            "input"
+        );
+
+    const question =
+        input.value.trim();
+
+
+    if(!question){
+
+        return;
+
+    }
+
+
+    /*
+       Foydalanuvchi savoli
+    */
+
+    addMessage(
+        question,
+        "user"
+    );
+
+
+    input.value = "";
+
+
+    /*
+       AI yozmoqda
+    */
+
+    showTyping();
+
+
+    /*
+       Tabiiyroq javob
+    */
+
+    setTimeout(() => {
+
+        hideTyping();
+
+
+        /*
+           AI Core mavjudligini tekshiramiz
+        */
+
+        if(
+            typeof MineAICore ===
+            "undefined"
+        ){
+
+            addMessage(
+                "❌ MineAI Core yuklanmadi. js/ai-core.js faylini tekshir.",
+                "ai"
+            );
+
+            return;
+
+        }
+
+
+        try{
+
+            const analysis =
+                MineAICore.analyze(
+                    question
+                );
+
+
+            const answer =
+                MineAICore.response(
+                    analysis
+                );
+
+
+            addMessage(
+                answer,
+                "ai",
+                analysis
+            );
+
+
+        }catch(error){
+
+            console.error(
+                error
+            );
+
+
+            addMessage(
+                "❌ MineAI javob berishda xatoga uchradi. Brauzer Console oynasini tekshir.",
+                "ai"
+            );
+
+        }
+
+    }, 350);
+
+}
+
+
+/* -----------------------------------------------------
+   QUICK QUESTION
+----------------------------------------------------- */
+
 function quickAsk(text){
 
-    document.getElementById("input").value = text;
+    const input =
+        document.getElementById(
+            "input"
+        );
+
+
+    input.value =
+        text;
+
 
     sendMessage();
 
 }
 
 
-function handleKey(event){
+/* -----------------------------------------------------
+   ENTER
+----------------------------------------------------- */
 
-    if(event.key === "Enter" && !event.shiftKey){
+document
+    .getElementById("input")
+    .addEventListener(
+        "keydown",
+        function(event){
 
-        event.preventDefault();
+            if(
+                event.key === "Enter" &&
+                !event.shiftKey
+            ){
 
-        sendMessage();
+                event.preventDefault();
 
-    }
+                sendMessage();
 
-}
+            }
+
+        }
+    );
+
+
+/* -----------------------------------------------------
+   SEND BUTTON
+----------------------------------------------------- */
+
+document
+    .getElementById("sendButton")
+    .addEventListener(
+        "click",
+        sendMessage
+    );
+
+
+/* -----------------------------------------------------
+   START
+----------------------------------------------------- */
+
+initializeMineAI();
 
 </script>
 
 </body>
-  </html>
+                </html>
