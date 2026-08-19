@@ -1,0 +1,51 @@
+const MineAIKnowledge = {
+
+    data: {},
+
+    async load() {
+
+        const files = [
+            "server",
+            "plugins",
+            "modes",
+            "mods",
+            "commands",
+            "errors"
+        ];
+
+        for (const file of files) {
+
+            try {
+
+                const response = await fetch(
+                    `knowledge/${file}.json`
+                );
+
+                if (!response.ok) {
+                    console.warn(
+                        `Knowledge yuklanmadi: ${file}.json`
+                    );
+                    continue;
+                }
+
+                this.data[file] = await response.json();
+
+            } catch (error) {
+
+                console.warn(
+                    `Knowledge xatosi: ${file}.json`,
+                    error
+                );
+
+            }
+        }
+
+        console.log(
+            "🧠 MineAI Knowledge Base yuklandi:",
+            this.data
+        );
+
+        return this.data;
+    }
+
+};
