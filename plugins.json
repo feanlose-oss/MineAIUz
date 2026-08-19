@@ -1,0 +1,41 @@
+{
+  "plugins": {
+    "LuckPerms": {
+      "category": "permissions",
+      "description": "Rank, guruh va permissionlarni boshqaradi.",
+      "commands": [
+        "/lp"
+      ]
+    },
+
+    "EssentialsX": {
+      "category": "general",
+      "description": "Home, spawn, teleport va boshqa asosiy server komandalarini beradi."
+    },
+
+    "WorldEdit": {
+      "category": "building",
+      "description": "Katta hududlarni tez qurish va tahrirlash uchun ishlatiladi."
+    },
+
+    "WorldGuard": {
+      "category": "protection",
+      "description": "Regionlarni himoyalash va ularga flag berish uchun ishlatiladi."
+    },
+
+    "Vault": {
+      "category": "api",
+      "description": "Economy, permission va chat pluginlari o‘rtasida integratsiya qatlamini taqdim qiladi."
+    },
+
+    "TAB": {
+      "category": "interface",
+      "description": "TAB ro‘yxati, scoreboard va server interfeysini sozlashda ishlatiladi."
+    },
+
+    "Multiverse-Core": {
+      "category": "world",
+      "description": "Bir serverda bir nechta Minecraft worldlarini boshqarishga yordam beradi."
+    }
+  }
+}
