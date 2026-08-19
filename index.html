@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MineAI — Minecraft Server Assistant</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    background:#070b09;
+    color:#eafff1;
+    font-family:Arial, sans-serif;
+}
+
+header{
+    height:65px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    border-bottom:1px solid #183523;
+    background:#0a100d;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:20px;
+    font-weight:900;
+}
+
+.logoIcon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:#39e879;
+    color:#041108;
+    font-weight:900;
+}
+
+.logo span{
+    color:#39e879;
+}
+
+.status{
+    font-size:12px;
+    color:#39e879;
+    border:1px solid #235c37;
+    padding:7px 10px;
+    border-radius:20px;
+}
+
+main{
+    max-width:1000px;
+    margin:auto;
+    padding:25px 15px 100px;
+}
+
+.hero{
+    text-align:center;
+    padding:25px 10px 30px;
+}
+
+.hero h1{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.hero h1 span{
+    color:#39e879;
+}
+
+.hero p{
+    color:#91a59a;
+    line-height:1.6;
+}
+
+.chat{
+    background:#0c1410;
+    border:1px solid #1c3525;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+.messages{
+    min-height:430px;
+    max-height:60vh;
+    overflow-y:auto;
+    padding:20px;
+}
+
+.message{
+    display:flex;
+    margin-bottom:18px;
+}
+
+.message.user{
+    justify-content:flex-end;
+}
+
+.bubble{
+    max-width:82%;
+    padding:13px 15px;
+    border-radius:15px;
+    line-height:1.55;
+    white-space:pre-wrap;
+}
+
+.ai .bubble{
+    background:#111d16;
+    border:1px solid #203b29;
+}
+
+.user .bubble{
+    background:#39e879;
+    color:#041108;
+    font-weight:600;
+}
+
+.inputArea{
+    border-top:1px solid #1c3525;
+    padding:12px;
+    display:flex;
+    gap:10px;
+    background:#0a100d;
+}
+
+textarea{
+    flex:1;
+    min-height:48px;
+    max-height:130px;
+    resize:none;
+    background:#101a14;
+    border:1px solid #24432e;
+    border-radius:12px;
+    color:white;
+    padding:13px;
+    outline:none;
+    font-size:15px;
+}
+
+textarea:focus{
+    border-color:#39e879;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+}
+
+.send{
+    width:52px;
+    border-radius:12px;
+    background:#39e879;
+    color:#041108;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.quick{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:12px;
+    border-top:1px solid #16291d;
+}
+
+.quick button{
+    padding:9px 12px;
+    border-radius:10px;
+    background:#101a14;
+    color:#b8d8c1;
+    border:1px solid #24432e;
+}
+
+.quick button:hover{
+    border-color:#39e879;
+    color:#39e879;
+}
+
+.typing{
+    color:#7d9986;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+@media(max-width:600px){
+    .hero h1{
+        font-size:27px;
+    }
+
+    .bubble{
+        max-width:90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logoIcon">M</div>
+        <div>Mine<span>AI</span></div>
+    </div>
+
+    <div class="status">● Minecraft AI</div>
+</header>
+
+<main>
+
+<section class="hero">
+    <h1>Minecraft <span>Server Assistant</span></h1>
+    <p>
+        Server yaratish, pluginlar, modlar, worldlar va
+        Minecraft rejimlari bo‘yicha yordamchi.
+    </p>
+</section>
+
+<section class="chat">
+
+    <div class="messages" id="messages">
+
+        <div class="message ai">
+            <div class="bubble">
+👋 Salom! Men MineAI.
+
+Men Minecraft server yaratishda yordam beraman.
+
+Masalan:
+• “Anarchy server ochmoqchiman”
+• “LuckPerms qanday sozlanadi?”
+• “1.21.1 uchun lobby kerak”
+• “Survival serverga qaysi pluginlar kerak?”
+• “BoxPvP map kerak”
+
+Savolingni yozaver! 🚀
+            </div>
+        </div>
+
+    </div>
+
+    <div class="quick">
+        <button onclick="quickAsk('Anarchy server ochmoqchiman')">
+            ⚔️ Anarchy
+        </button>
+
+        <button onclick="quickAsk('Survival server ochmoqchiman')">
+            🌲 Survival
+        </button>
+
+        <button onclick="quickAsk('Lobby hub kerak')">
+            🏰 Lobby
+        </button>
+
+        <button onclick="quickAsk('Pluginlar kerak')">
+            🔌 Pluginlar
+        </button>
+
+        <button onclick="quickAsk('BoxPvP server qilmoqchiman')">
+            💥 BoxPvP
+        </button>
+    </div>
+
+    <div class="inputArea">
+        <textarea
+            id="input"
+            placeholder="Minecraft server haqida savol yoz..."
+            onkeydown="handleKey(event)"
+        ></textarea>
+
+        <button class="send" onclick="sendMessage()">➤</button>
+    </div>
+
+</section>
+
+</main>
+
+<script>
+
+/* =====================================================
+   MINEAI CORE
+   API YO‘Q
+   ===================================================== */
+
+const knowledge = [
+
+{
+    keys:["salom","hello","assalom","hi"],
+    answer:
+`👋 Salom!
+
+Men MineAI — Minecraft server yaratishda yordam beradigan AI yordamchiman.
+
+Servering nima haqida bo‘lishini ayt:
+⚔️ Anarchy
+🌲 Survival
+💥 BoxPvP
+🏰 Hub/Lobby
+☁️ Skyblock
+⛏️ Prison`
+},
+
+{
+    keys:["anarchy","anarxiya"],
+    answer:
+`⚔️ ANARCHY SERVER
+
+Anarchy server uchun odatda:
+
+1. Paper yoki mos server yadrosi
+2. Spawn
+3. RTP
+4. PvP
+5. Economy
+6. Anti-cheat
+7. Rank tizimi
+8. Hub/Lobby
+9. WorldBorder
+10. Server backup
+
+Xohlasang MineAI bilan Anarchy serverni bosqichma-bosqich qurishimiz mumkin.`
+},
+
+{
+    keys:["survival","surv"],
+    answer:
+`🌲 SURVIVAL SERVER
+
+Tavsiya qilinadigan asosiy qismlar:
+
+• EssentialsX
+• LuckPerms
+• WorldEdit
+• WorldGuard
+• Vault
+• Economy
+• RTP
+• Spawn
+• Shop
+• Homes
+• Claims
+
+Avval server yadrosini tanlaymiz, keyin pluginlarni birma-bir sozlaymiz.`
+},
+
+{
+    keys:["boxpvp","box pvp"],
+    answer:
+`💥 BOX PVP
+
+BoxPvP server uchun:
+
+• PvP arena
+• Spawn
+• Mine
+• Kitlar
+• Ranklar
+• Economy
+• Crates
+• Leaderboard
+• Anti-cheat
+• WorldGuard
+
+Keyin map va pluginlarni moslashtiramiz.`
+},
+
+{
+    keys:["lobby","hub","spawn"],
+    answer:
+`🏰 LOBBY / HUB
+
+Lobby uchun odatda:
+
+• Hub map
+• NPC
+• Server selector
+• Scoreboard
+• TAB
+• Cosmetics
+• Parkour
+• Portallar
+• Spawn protection
+
+Agar “1.21.1 uchun lobby map kerak” desang, keyingi versiyada qidiruv tizimi orqali mos maplarni topish funksiyasini qo‘shamiz.`
+},
+
+{
+    keys:["plugin","plugins"],
+    answer:
+`🔌 PLUGINLAR
+
+Minecraft server uchun ko‘p ishlatiladigan pluginlar:
+
+• LuckPerms — permission/rank
+• EssentialsX — asosiy komandalar
+• WorldEdit — qurilish
+• WorldGuard — region himoyasi
+• Vault — economy/permission integratsiyasi
+• TAB — TAB va scoreboard
+• Multiverse — bir nechta world
+• Citizens — NPC
+
+Servering qaysi rejimdaligini aytsang, kerakli pluginlarni ajratib beraman.`
+},
+
+{
+    keys:["luckperms","rank","permission"],
+    answer:
+`👑 LUCKPERMS
+
+LuckPerms yordamida:
+
+• rank yaratish
+• permission berish
+• prefix qo‘yish
+• guruhlarni boshqarish
+• admin/moderator huquqlarini sozlash
+
+mumkin.
+
+Masalan:
+
+/lp creategroup Askar
+
+Keyin unga kerakli permissionlarni beramiz.`
+},
+
+{
+    keys:["map","karta","world","zip","hub.zip","world.zip"],
+    answer:
+`🗺️ MAP / WORLD
+
+Agar map kerak bo‘lsa, menga quyidagilarni yoz:
+
+Minecraft versiyasi:
+Masalan: 1.21.1
+
+Rejim:
+Masalan: Anarchy
+
+Map turi:
+Masalan: Lobby
+
+Shunda kerakli mapni qidirish uchun so‘rovni tayyorlaymiz.
+
+Keyingi bosqichda MineAI'ga real internet qidiruvini qo‘shamiz.`
+},
+
+{
+    keys:["server","server och","server ochish"],
+    answer:
+`🖥️ MINECRAFT SERVER
+
+Server ochishning asosiy bosqichlari:
+
+1. Minecraft versiyasini tanlash
+2. Server yadrosini tanlash
+3. Serverni ishga tushirish
+4. server.properties sozlash
+5. Plugin/modlarni o‘rnatish
+6. World yaratish
+7. Spawn qurish
+8. Permission/rank
+9. Protection
+10. Test qilish
+
+Agar xohlasang, serverni noldan birga quramiz.`
+},
+
+{
+    keys:["fabric"],
+    answer:
+`🧩 FABRIC
+
+Fabric — Minecraft uchun yengil mod loader.
+
+Agar serverda Fabric ishlatsang:
+
+• Fabric Loader
+• Fabric API
+• Server modlari
+
+kerak bo‘lishi mumkin.
+
+Paper pluginlari bilan Fabric modlarini aralashtirishda moslikni alohida tekshirish kerak.`
+},
+
+{
+    keys:["paper","spigot"],
+    answer:
+`⚙️ PAPER / SPIGOT
+
+Pluginli server uchun Paper juda qulay.
+
+Paper → performance + pluginlar
+
+Spigot → plugin ekotizimi
+
+Server rejimingni aytsang, qaysi biri ma’qul ekanini tushuntiraman.`
+},
+
+{
+    keys:["rtp","random teleport"],
+    answer:
+`🌍 RTP
+
+RTP o‘yinchini random joyga teleport qilish uchun ishlatiladi.
+
+Anarchy va Survival serverlarda juda foydali.
+
+Masalan:
+
+/rtp
+
+RTP pluginini tanlashda Minecraft versiyangni tekshirish kerak.`
+}
+
+];
+
+
+/* =====================================================
+   JAVOB QIDIRISH
+   ===================================================== */
+
+function normalize(text){
+
+    return text
+        .toLowerCase()
+        .replace(/[.,!?;:()[\]{}]/g," ")
+        .replace(/\s+/g," ")
+        .trim();
+
+}
+
+
+function findAnswer(question){
+
+    const q = normalize(question);
+
+    let best = null;
+    let bestScore = 0;
+
+    for(const item of knowledge){
+
+        let score = 0;
+
+        for(const key of item.keys){
+
+            const normalizedKey = normalize(key);
+
+            if(q.includes(normalizedKey)){
+                score += normalizedKey.length + 3;
+            }
+        }
+
+        if(score > bestScore){
+            bestScore = score;
+            best = item;
+        }
+    }
+
+    if(best){
+        return best.answer;
+    }
+
+    return fallback(question);
+}
+
+
+/* =====================================================
+   FALLBACK
+   ===================================================== */
+
+function fallback(question){
+
+    const words = normalize(question)
+        .split(" ")
+        .filter(w => w.length >= 3);
+
+    const minecraftWords = [
+        "minecraft",
+        "server",
+        "plugin",
+        "mod",
+        "world",
+        "map",
+        "lobby",
+        "hub",
+        "anarchy",
+        "survival",
+        "pvp",
+        "paper",
+        "fabric",
+        "spigot",
+        "rank",
+        "spawn",
+        "rtp"
+    ];
+
+    const related = words.some(word =>
+        minecraftWords.some(m => m.includes(word) || word.includes(m))
+    );
+
+    if(related){
+
+        return `🤔 Bu savol bo‘yicha bilim bazamda hozircha aniq javob yo‘q.
+
+Savolingni biroz boshqacha yozib ko‘r.
+
+Masalan:
+• Minecraft 1.21.1 server ochish
+• Anarchy uchun pluginlar
+• Lobby map kerak
+• LuckPerms rank yaratish
+• Survival server sozlash
+
+🧠 MineAI bilim bazasi keyingi bosqichlarda kengaytiriladi.`;
+    }
+
+    return `🛡️ Men faqat Minecraft serverlari bo‘yicha yordam beraman.
+
+Masalan:
+“Anarchy server ochish”
+“1.21.1 lobby map kerak”
+“LuckPerms rank yaratish”
+“Survival pluginlari kerak”`;
+}
+
+
+/* =====================================================
+   CHAT
+   ===================================================== */
+
+function addMessage(text,type){
+
+    const messages = document.getElementById("messages");
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "message " + type;
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = text;
+
+    wrapper.appendChild(bubble);
+    messages.appendChild(wrapper);
+
+    messages.scrollTop = messages.scrollHeight;
+}
+
+
+function sendMessage(){
+
+    const input = document.getElementById("input");
+    const question = input.value.trim();
+
+    if(!question) return;
+
+    addMessage(question,"user");
+
+    input.value = "";
+
+    const typing = document.createElement("div");
+    typing.className = "typing";
+    typing.id = "typing";
+    typing.textContent = "MineAI yozmoqda...";
+
+    document.getElementById("messages").appendChild(typing);
+
+    setTimeout(() => {
+
+        typing.remove();
+
+        const answer = findAnswer(question);
+
+        addMessage(answer,"ai");
+
+    },350);
+}
+
+
+function quickAsk(text){
+
+    document.getElementById("input").value = text;
+
+    sendMessage();
+
+}
+
+
+function handleKey(event){
+
+    if(event.key === "Enter" && !event.shiftKey){
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+}
+
+</script>
+
+</body>
+  </html>
