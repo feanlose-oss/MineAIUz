@@ -1,0 +1,67 @@
+{
+  "modes": {
+    "anarchy": {
+      "name": "Anarchy",
+      "description": "Qoidalari juda kam yoki deyarli yo‘q PvP server rejimi.",
+      "recommended": [
+        "Spawn",
+        "RTP",
+        "PvP",
+        "WorldBorder",
+        "AntiCheat",
+        "Economy",
+        "Ranks"
+      ]
+    },
+
+    "survival": {
+      "name": "Survival",
+      "description": "O‘yinchilar resurs yig‘ib, qurib va tirik qolib o‘ynaydigan rejim.",
+      "recommended": [
+        "EssentialsX",
+        "LuckPerms",
+        "WorldGuard",
+        "Economy",
+        "Claims",
+        "Shop"
+      ]
+    },
+
+    "boxpvp": {
+      "name": "BoxPvP",
+      "description": "PvP arena, mine, kit va progressionga asoslangan server rejimi.",
+      "recommended": [
+        "PvP Arena",
+        "Kits",
+        "Crates",
+        "Ranks",
+        "Economy",
+        "Leaderboard"
+      ]
+    },
+
+    "skyblock": {
+      "name": "Skyblock",
+      "description": "O‘yinchi kichik orolda boshlaydigan survival rejimi.",
+      "recommended": [
+        "Island system",
+        "Economy",
+        "Shop",
+        "Challenges",
+        "Ranks"
+      ]
+    },
+
+    "prison": {
+      "name": "Prison",
+      "description": "Mine, rank va progressionga asoslangan server rejimi.",
+      "recommended": [
+        "Mines",
+        "Ranks",
+        "Economy",
+        "Prestige",
+        "Crates"
+      ]
+    }
+  }
+}
