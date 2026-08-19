@@ -1,139 +1,41 @@
 /* =========================================================
-   MineAI CORE v2
+   MineAI CORE v3
+   JSON Knowledge Base bilan ishlaydi
    API YO'Q
-   Minecraft Server Assistant
    ========================================================= */
 
 const MineAICore = (() => {
 
-    const STOP_WORDS = new Set([
-        "menga",
-        "kerak",
-        "qanday",
-        "qanaqa",
-        "qilaman",
-        "qilsam",
-        "uchun",
-        "bilan",
-        "ber",
-        "top",
-        "qilib",
-        "ochmoqchiman",
-        "ochmoqchi",
-        "men",
-        "bu",
-        "shu",
-        "ham",
-        "va",
-        "da",
-        "ga",
-        "ni"
-    ]);
-
-    const MODES = {
-        anarchy: [
-            "anarchy",
-            "anarxiya",
-            "anarx"
-        ],
-
-        survival: [
-            "survival",
-            "surv"
-        ],
-
-        boxpvp: [
-            "boxpvp",
-            "box pvp",
-            "box-pvp"
-        ],
-
-        skyblock: [
-            "skyblock",
-            "sky block"
-        ],
-
-        prison: [
-            "prison",
-            "qamoqxona"
-        ],
-
-        kitpvp: [
-            "kitpvp",
-            "kit pvp"
-        ],
-
-        lifesteal: [
-            "lifesteal",
-            "life steal"
-        ],
-
-        hub: [
-            "hub",
-            "lobby",
-            "spawn"
-        ]
+    let knowledge = {
+        server: {},
+        plugins: {},
+        modes: {},
+        mods: {},
+        commands: {},
+        errors: {}
     };
 
-    const CATEGORIES = {
 
-        map: [
-            "map",
-            "karta",
-            "world",
-            "zip",
-            "world.zip",
-            "lobby map",
-            "karta kerak"
-        ],
+    /* =====================================================
+       KNOWLEDGE ULASH
+    ===================================================== */
 
-        plugin: [
-            "plugin",
-            "plugins",
-            "plagin"
-        ],
+    function setKnowledge(data) {
 
-        mod: [
-            "mod",
-            "mods",
-            "modlar"
-        ],
+        knowledge = {
+            ...knowledge,
+            ...(data || {})
+        };
 
-        server: [
-            "server",
-            "server och",
-            "server yarat"
-        ],
+        console.log(
+            "🧠 MineAI Core Knowledge qabul qildi."
+        );
+    }
 
-        rank: [
-            "rank",
-            "prefix",
-            "permission",
-            "huquq"
-        ],
 
-        error: [
-            "error",
-            "xato",
-            "ishlamayapti",
-            "crash",
-            "ochilmayapti",
-            "kirmayapti"
-        ],
-
-        rtp: [
-            "rtp",
-            "random teleport",
-            "tasodifiy teleport"
-        ],
-
-        config: [
-            "sozlash",
-            "setting",
-            "config",
-            "server.properties"
-        ]
-    };
+    /* =====================================================
+       TEXT NORMALIZE
+    ===================================================== */
 
     function normalize(text) {
 
@@ -145,15 +47,10 @@ const MineAICore = (() => {
             .trim();
     }
 
-    function tokenize(text) {
 
-        return normalize(text)
-            .split(" ")
-            .filter(word =>
-                word.length >= 2 &&
-                !STOP_WORDS.has(word)
-            );
-    }
+    /* =====================================================
+       VERSION
+    ===================================================== */
 
     function detectVersion(text) {
 
@@ -170,13 +67,63 @@ const MineAICore = (() => {
             .trim();
     }
 
+
+    /* =====================================================
+       SERVER MODE
+    ===================================================== */
+
     function detectMode(text) {
 
         const q = normalize(text);
 
-        for (const mode in MODES) {
+        const modes = {
+            anarchy: [
+                "anarchy",
+                "anarxiya",
+                "anarx"
+            ],
 
-            for (const keyword of MODES[mode]) {
+            survival: [
+                "survival",
+                "surv"
+            ],
+
+            boxpvp: [
+                "boxpvp",
+                "box pvp",
+                "box-pvp"
+            ],
+
+            skyblock: [
+                "skyblock",
+                "sky block"
+            ],
+
+            prison: [
+                "prison"
+            ],
+
+            kitpvp: [
+                "kitpvp",
+                "kit pvp"
+            ],
+
+            lifesteal: [
+                "lifesteal",
+                "life steal"
+            ],
+
+            hub: [
+                "hub",
+                "lobby",
+                "spawn"
+            ]
+        };
+
+
+        for (const mode in modes) {
+
+            for (const keyword of modes[mode]) {
 
                 if (q.includes(keyword)) {
                     return mode;
@@ -187,253 +134,777 @@ const MineAICore = (() => {
         return null;
     }
 
+
+    /* =====================================================
+       CATEGORY
+    ===================================================== */
+
     function detectCategory(text) {
 
         const q = normalize(text);
 
-        let bestCategory = null;
-        let bestScore = 0;
+        const categories = {
 
-        for (const category in CATEGORIES) {
+            map: [
+                "map",
+                "karta",
+                "world",
+                "zip",
+                "hub map",
+                "lobby map"
+            ],
 
-            let score = 0;
+            plugin: [
+                "plugin",
+                "plugins",
+                "plagin"
+            ],
 
-            for (const keyword of CATEGORIES[category]) {
+            mod: [
+                "mod",
+                "mods",
+                "modlar"
+            ],
+
+            command: [
+                "command",
+                "komanda",
+                "buyruq"
+            ],
+
+            error: [
+                "error",
+                "xato",
+                "ishlamayapti",
+                "crash",
+                "ochilmayapti",
+                "kirmayapti"
+            ],
+
+            server: [
+                "server",
+                "server och",
+                "server yarat"
+            ],
+
+            rank: [
+                "rank",
+                "prefix",
+                "permission"
+            ]
+        };
+
+
+        let best = null;
+        let score = 0;
+
+
+        for (const category in categories) {
+
+            let current = 0;
+
+            for (const keyword of categories[category]) {
 
                 if (q.includes(keyword)) {
-                    score += keyword.length + 2;
+                    current += keyword.length + 2;
                 }
             }
 
-            if (score > bestScore) {
 
-                bestScore = score;
-                bestCategory = category;
+            if (current > score) {
+
+                score = current;
+                best = category;
             }
         }
 
-        return bestCategory;
+
+        return best;
     }
+
+
+    /* =====================================================
+       INTENT
+    ===================================================== */
 
     function detectIntent(text) {
 
         const q = normalize(text);
 
+
         if (
             q.includes("top") ||
             q.includes("qidir") ||
             q.includes("topib ber") ||
-            q.includes("yuklab olish") ||
+            q.includes("kerak") ||
             q.includes("download")
         ) {
             return "search";
         }
 
+
         if (
             q.includes("qanday") ||
             q.includes("qanaqa") ||
             q.includes("qilib") ||
-            q.includes("sozlash")
+            q.includes("qanday qilib")
         ) {
             return "howto";
         }
 
+
         if (
-            q.includes("xato") ||
             q.includes("error") ||
-            q.includes("ishlamayapti") ||
-            q.includes("crash")
+            q.includes("xato") ||
+            q.includes("crash") ||
+            q.includes("ishlamayapti")
         ) {
             return "troubleshoot";
         }
 
+
         return "question";
     }
 
-    function extractEntities(text) {
 
-        const q = normalize(text);
+    /* =====================================================
+       TOKEN
+    ===================================================== */
 
-        return {
-            version: detectVersion(q),
-            mode: detectMode(q),
-            category: detectCategory(q),
-            intent: detectIntent(q),
-            tokens: tokenize(q)
-        };
+    function getTokens(text) {
+
+        const stopWords = new Set([
+            "menga",
+            "kerak",
+            "qanday",
+            "qanaqa",
+            "qilib",
+            "qilaman",
+            "uchun",
+            "bilan",
+            "ber",
+            "top",
+            "men",
+            "bu",
+            "shu",
+            "ham",
+            "va",
+            "da",
+            "ga",
+            "ni",
+            "bir",
+            "chi"
+        ]);
+
+
+        return normalize(text)
+            .split(" ")
+            .filter(word =>
+                word.length >= 3 &&
+                !stopWords.has(word)
+            );
     }
 
-    function analyze(text) {
 
-        if (!text || !String(text).trim()) {
+    /* =====================================================
+       PLUGIN QIDIRISH
+    ===================================================== */
+
+    function findPlugin(question) {
+
+        const q = normalize(question);
+
+        const plugins =
+            knowledge.plugins?.plugins || {};
+
+
+        for (const name in plugins) {
+
+            if (
+                q.includes(
+                    normalize(name)
+                )
+            ) {
+
+                return {
+                    name,
+                    data: plugins[name]
+                };
+            }
+        }
+
+
+        return null;
+    }
+
+
+    /* =====================================================
+       MOD QIDIRISH
+    ===================================================== */
+
+    function findMod(question) {
+
+        const q = normalize(question);
+
+        const mods =
+            knowledge.mods?.mods || {};
+
+
+        for (const name in mods) {
+
+            if (
+                q.includes(
+                    normalize(name)
+                )
+            ) {
+
+                return {
+                    name,
+                    data: mods[name]
+                };
+            }
+        }
+
+
+        return null;
+    }
+
+
+    /* =====================================================
+       COMMAND QIDIRISH
+    ===================================================== */
+
+    function findCommand(question) {
+
+        const q = normalize(question);
+
+        const commands =
+            knowledge.commands?.commands || {};
+
+
+        for (const key in commands) {
+
+            const data =
+                commands[key];
+
+
+            if (
+                q.includes(key) ||
+                q.includes(
+                    normalize(
+                        data.description || ""
+                    )
+                )
+            ) {
+
+                return {
+                    name: key,
+                    data
+                };
+            }
+        }
+
+
+        return null;
+    }
+
+
+    /* =====================================================
+       ERROR QIDIRISH
+    ===================================================== */
+
+    function findError(question) {
+
+        const q = normalize(question);
+
+        const errors =
+            knowledge.errors?.errors || {};
+
+
+        let best = null;
+        let score = 0;
+
+
+        for (const key in errors) {
+
+            const data =
+                errors[key];
+
+
+            let current = 0;
+
+
+            for (
+                const keyword
+                of data.keywords || []
+            ) {
+
+                if (
+                    q.includes(
+                        normalize(keyword)
+                    )
+                ) {
+
+                    current +=
+                        keyword.length + 3;
+                }
+            }
+
+
+            if (current > score) {
+
+                score = current;
+
+                best = {
+                    name: key,
+                    data,
+                    score
+                };
+            }
+        }
+
+
+        return best;
+    }
+
+
+    /* =====================================================
+       ANALYZE
+    ===================================================== */
+
+    function analyze(question) {
+
+        if (
+            !question ||
+            !String(question).trim()
+        ) {
 
             return {
-                ok: false,
-                message: "Savol bo‘sh."
+                ok: false
             };
         }
 
-        const entities = extractEntities(text);
 
-        let confidence = 0;
+        const version =
+            detectVersion(question);
 
-        if (entities.version) {
-            confidence += 25;
-        }
+        const mode =
+            detectMode(question);
 
-        if (entities.mode) {
-            confidence += 25;
-        }
+        const category =
+            detectCategory(question);
 
-        if (entities.category) {
-            confidence += 25;
-        }
+        const intent =
+            detectIntent(question);
 
-        if (entities.intent !== "question") {
+        const tokens =
+            getTokens(question);
+
+
+        const plugin =
+            findPlugin(question);
+
+        const mod =
+            findMod(question);
+
+        const command =
+            findCommand(question);
+
+        const error =
+            findError(question);
+
+
+        let confidence = 20;
+
+
+        if (version) {
             confidence += 15;
         }
 
-        if (entities.tokens.length >= 2) {
+        if (mode) {
+            confidence += 15;
+        }
+
+        if (category) {
+            confidence += 15;
+        }
+
+        if (plugin) {
+            confidence += 15;
+        }
+
+        if (mod) {
             confidence += 10;
         }
 
-        confidence = Math.min(confidence, 100);
+        if (error) {
+            confidence += 15;
+        }
+
+        if (tokens.length >= 3) {
+            confidence += 5;
+        }
+
+
+        confidence =
+            Math.min(
+                confidence,
+                100
+            );
+
 
         return {
+
             ok: true,
-            question: String(text).trim(),
-            confidence,
-            ...entities
+
+            question:
+                String(question).trim(),
+
+            version,
+
+            mode,
+
+            category,
+
+            intent,
+
+            tokens,
+
+            plugin,
+
+            mod,
+
+            command,
+
+            error,
+
+            confidence
         };
     }
 
-    function createContext(analysis) {
 
-        const context = [];
-
-        if (analysis.version) {
-            context.push(`Minecraft versiyasi: ${analysis.version}`);
-        }
-
-        if (analysis.mode) {
-            context.push(`Server rejimi: ${analysis.mode}`);
-        }
-
-        if (analysis.category) {
-            context.push(`Mavzu: ${analysis.category}`);
-        }
-
-        if (analysis.intent) {
-            context.push(`Maqsad: ${analysis.intent}`);
-        }
-
-        return context;
-    }
+    /* =====================================================
+       RESPONSE
+    ===================================================== */
 
     function response(analysis) {
 
-        if (!analysis.ok) {
+        if (!analysis?.ok) {
+
             return "Savolingni yoz.";
         }
 
-        const context = createContext(analysis);
 
-        if (analysis.category === "map") {
+        /* ================= ERROR ================= */
 
-            let result =
-                "🗺️ MAP QIDIRISH SO‘ROVI ANIQLANDI.\n\n";
+        if (analysis.error) {
 
-            if (analysis.version) {
-                result +=
-                    `🎮 Versiya: ${analysis.version}\n`;
-            } else {
-                result +=
-                    "🎮 Versiya: aniqlanmadi\n";
+            const error =
+                analysis.error.data;
+
+
+            let text =
+                "🐛 SERVER XATOSI ANIQLANDI\n\n";
+
+
+            text +=
+                `🔎 Xato turi: ${analysis.error.name}\n\n`;
+
+
+            if (error.cause) {
+
+                text +=
+                    `📌 Sabab:\n${error.cause}\n\n`;
             }
 
-            if (analysis.mode) {
-                result +=
-                    `⚔️ Rejim: ${analysis.mode}\n`;
-            } else {
-                result +=
-                    "⚔️ Rejim: aniqlanmadi\n";
+
+            if (
+                Array.isArray(
+                    error.solution
+                )
+            ) {
+
+                text +=
+                    "🛠️ Yechim:\n";
+
+
+                error.solution.forEach(
+                    (step, index) => {
+
+                        text +=
+                            `${index + 1}. ${step}\n`;
+                    }
+                );
             }
 
-            result +=
-                "\nKeyingi bosqichda MineAI shu ma'lumotlar asosida internetdan mos maplarni qidiradi.";
 
-            return result;
+            return text;
         }
 
-        if (analysis.category === "plugin") {
+
+        /* ================= PLUGIN ================= */
+
+        if (analysis.plugin) {
+
+            const plugin =
+                analysis.plugin;
+
+
+            let text =
+                `🔌 ${plugin.name}\n\n`;
+
+
+            text +=
+                `${plugin.data.description || ""}\n`;
+
+
+            if (
+                Array.isArray(
+                    plugin.data.commands
+                )
+            ) {
+
+                text +=
+                    "\n📋 Asosiy command:\n";
+
+
+                plugin.data.commands.forEach(
+                    command => {
+
+                        text +=
+                            `• ${command}\n`;
+                    }
+                );
+            }
+
+
+            return text;
+        }
+
+
+        /* ================= MOD ================= */
+
+        if (analysis.mod) {
+
+            const mod =
+                analysis.mod;
+
+
+            let text =
+                `🧩 ${mod.name}\n\n`;
+
+
+            text +=
+                `${mod.data.description || ""}\n`;
+
+
+            if (mod.data.loader) {
+
+                text +=
+                    `\nLoader: ${mod.data.loader}`;
+            }
+
+
+            if (mod.data.type) {
+
+                text +=
+                    `\nTuri: ${mod.data.type}`;
+            }
+
+
+            return text;
+        }
+
+
+        /* ================= COMMAND ================= */
+
+        if (analysis.command) {
+
+            const command =
+                analysis.command;
+
+
+            let text =
+                `⌨️ ${command.name}\n\n`;
+
+
+            text +=
+                `${command.data.description || ""}\n\n`;
+
+
+            if (
+                Array.isArray(
+                    command.data.commands
+                )
+            ) {
+
+                text +=
+                    "📋 Commandlar:\n";
+
+
+                command.data.commands.forEach(
+                    cmd => {
+
+                        text +=
+                            `• ${cmd}\n`;
+                    }
+                );
+            }
+
+
+            return text;
+        }
+
+
+        /* ================= MAP ================= */
+
+        if (
+            analysis.category ===
+            "map"
+        ) {
 
             return (
-                "🔌 PLUGIN SO‘ROVI ANIQLANDI.\n\n" +
-                "MineAI server versiyasi va rejimiga qarab " +
-                "kerakli pluginlarni tanlash tizimiga ega bo‘ladi.\n\n" +
-                (context.length
-                    ? context.join("\n")
-                    : "Versiya yoki server rejimini ham yozsang, aniqroq tavsiya beraman.")
+                "🗺️ MAP QIDIRISH SO‘ROVI\n\n" +
+
+                (
+                    analysis.version
+                        ? `🎮 Versiya: ${analysis.version}\n`
+                        : "🎮 Versiya: aniqlanmadi\n"
+                ) +
+
+                (
+                    analysis.mode
+                        ? `⚔️ Rejim: ${analysis.mode}\n`
+                        : "⚔️ Rejim: aniqlanmadi\n"
+                ) +
+
+                "\n🌐 Real internet qidiruvi hali ulanmagan.\n" +
+                "Keyingi bosqichda MineAI mos maplarni " +
+                "qidirib, natijalarni chiqaradi."
             );
         }
 
-        if (analysis.category === "error") {
+
+        /* ================= SERVER ================= */
+
+        if (
+            analysis.category ===
+            "server"
+        ) {
 
             return (
-                "🐛 SERVER XATOSI ANIQLANDI.\n\n" +
-                "Xatoni to‘liq nusxalab yubor. MineAI xatodagi " +
-                "muhim qismlarni ajratib, ehtimoliy sabab va yechimni topadi."
+                "🖥️ SERVER YARATISH\n\n" +
+
+                (
+                    analysis.version
+                        ? `🎮 Versiya: ${analysis.version}\n`
+                        : "🎮 Versiya: versiya aniqlanmadi\n"
+                ) +
+
+                (
+                    analysis.mode
+                        ? `⚔️ Rejim: ${analysis.mode}\n`
+                        : "⚔️ Rejim: rejim aniqlanmadi\n"
+                ) +
+
+                "\nAvval server yadrosini tanlaymiz: " +
+                "Paper, Spigot yoki Fabric."
             );
         }
 
-        if (analysis.category === "rank") {
+
+        /* ================= RANK ================= */
+
+        if (
+            analysis.category ===
+            "rank"
+        ) {
 
             return (
-                "👑 RANK / PERMISSION SO‘ROVI.\n\n" +
-                "LuckPerms orqali rank, prefix va permissionlarni " +
-                "sozlash mumkin.\n\n" +
-                "Masalan: Askar → Sarkarda → Qahramon → Afsona."
-            );
-        }
+                "👑 RANK / PERMISSION\n\n" +
 
-        if (analysis.category === "server") {
+                "Ranklarni boshqarish uchun LuckPerms " +
+                "ishlatish mumkin.\n\n" +
 
-            return (
-                "🖥️ SERVER YARATISH SO‘ROVI.\n\n" +
-                "Avval Minecraft versiyasi va server rejimini aniqlaymiz.\n\n" +
                 "Masalan:\n" +
-                "1.21.1 + Anarchy\n" +
-                "1.21.1 + Survival\n" +
-                "1.21.1 + BoxPvP"
+
+                "/lp creategroup Askar\n" +
+
+                "/lp user Player parent set Askar"
             );
         }
+
+
+        /* ================= MODE ================= */
 
         if (analysis.mode) {
 
-            return (
-                `⚔️ ${analysis.mode.toUpperCase()} REJIMI ANIQLANDI.\n\n` +
-                "Server uchun kerakli tizimlarni bosqichma-bosqich " +
-                "tanlashimiz mumkin.\n\n" +
-                "Versiyani ham yozsang, tavsiya aniqroq bo‘ladi."
-            );
+            const mode =
+                knowledge.modes?.modes?.[
+                    analysis.mode
+                ];
+
+
+            if (mode) {
+
+                let text =
+                    `⚔️ ${mode.name}\n\n`;
+
+
+                text +=
+                    `${mode.description}\n\n`;
+
+
+                if (
+                    Array.isArray(
+                        mode.recommended
+                    )
+                ) {
+
+                    text +=
+                        "📦 Tavsiya:\n";
+
+
+                    mode.recommended.forEach(
+                        item => {
+
+                            text +=
+                                `• ${item}\n`;
+                        }
+                    );
+                }
+
+
+                return text;
+            }
         }
 
+
+        /* ================= DEFAULT ================= */
+
         return (
-            "🤖 MineAI savolingni Minecraft mavzusi sifatida tahlil qildi.\n\n" +
-            `Ishonchlilik: ${analysis.confidence}%\n\n` +
-            "Minecraft versiyasi, server rejimi yoki kerakli narsani " +
-            "aniqroq yozib ko‘r."
+            "🤖 MineAI savolingni tahlil qildi.\n\n" +
+
+            `🧠 Ishonchlilik: ${analysis.confidence}%\n\n` +
+
+            "Aniqroq javob olish uchun Minecraft " +
+            "versiyasi, server rejimi yoki plugin/mod " +
+            "nomini yoz."
         );
     }
 
+
     return {
+
+        setKnowledge,
         analyze,
         response,
-        extractEntities,
-        detectVersion,
-        detectMode,
-        detectCategory,
-        detectIntent
+
+        findPlugin,
+        findMod,
+        findCommand,
+        findError
+
     };
 
 })();
